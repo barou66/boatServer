@@ -26,6 +26,7 @@ public class BoatServiceImpl implements BoatService {
     @Override
     public Boat createBoat(@NotNull Boat boat) {
         checkMandatoryValues(boat);
+        checkExistingName(boat.getName());
         return BoatMapper.entityToModel(this.boatDaoRepository.save(BoatMapper.modelToEntity(boat)));
     }
 
@@ -70,6 +71,13 @@ public class BoatServiceImpl implements BoatService {
         }
         if(StringUtils.isBlank(boat.getDescription())) {
             throw new BusinessException("description.is.empty");
+        }
+    }
+
+    private void checkExistingName(String name){
+        Optional<BoatDao> boatDao = this.boatDaoRepository.findByName(name);
+        if(boatDao.isPresent()){
+            throw new BusinessException("boat.name.exist");
         }
     }
 }
