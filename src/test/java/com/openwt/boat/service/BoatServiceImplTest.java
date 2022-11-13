@@ -116,7 +116,9 @@ class BoatServiceImplTest {
 
     @Test
     void findBoatById_KO() {
-        assertNull(boatService.findBoatById(12));
+        ResourceNotFoundException resourceNotFoundException = assertThrows(ResourceNotFoundException.class,
+                () -> boatService.findBoatById(12));
+        Assertions.assertEquals("boat.not.found", resourceNotFoundException.getMessage());
     }
 
     @Test

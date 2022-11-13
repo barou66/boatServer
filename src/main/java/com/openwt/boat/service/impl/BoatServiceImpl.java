@@ -45,7 +45,7 @@ public class BoatServiceImpl implements BoatService {
     public Boat findBoatById(Integer id) {
         Optional<BoatDao> boatOp = this.boatDaoRepository.findById(id);
         if(!boatOp.isPresent()) {
-            return null;
+            throw new ResourceNotFoundException("boat.not.found");
         }
         return BoatMapper.entityToModel(boatOp.get());
     }
